@@ -1,14 +1,10 @@
 ECHA CHEM MCP Server
 ====================
 
-An MCP server built with [FastMCP](https://pypi.org/project/fastmcp/) that
-exposes regulatory chemical hazard data from the **ECHA CHEM** database
-(European Chemicals Agency, <https://chem.echa.europa.eu>) as MCP tools.
+An MCP for regulatory chemical hazard data from the **ECHA CHEM** database
+(European Chemicals Agency, <https://chem.echa.europa.eu>).
 
-It covers substance identity, REACH registration dossiers, CLP notifications,
-harmonised (Annex VI) classifications, PBT assessments, and toxicology /
-ecotoxicology study data. All tools are keyed on an **ECHA substance index**
-(e.g. `100.000.002` for Formaldehyde).
+It covers substance identity, REACH registration dossiers, CLP notifications, harmonised (Annex VI) classifications, PBT assessments, and toxicology / ecotoxicology study data. Most of the tools are keyed on an **ECHA substance index** (e.g. `100.000.002` for Formaldehyde).
 
 
 Repository layout
@@ -33,43 +29,18 @@ Prerequisites
 -------------
 - Python 3.10+ recommended.
 - `pip` for dependency installation.
+ 
 
+Running with MCP URL:
+-------------------
+The MCP server is available with this url: `echa-chem.serve.scilifelab.se/mcp`.
 
-Running locally
----------------
-From the **parent** directory of `echa_mcp/`:
-
-```bash
-pip install -r echa_mcp/requirements.txt
-python -m echa_mcp
-```
-
-The server reads three environment variables:
-
-| Variable        | Default           | Notes                                    |
-|-----------------|-------------------|------------------------------------------|
-| `MCP_TRANSPORT` | `streamable-http` | `streamable-http`, `http`, `sse`, `stdio` |
-| `HOST`          | `0.0.0.0`         | ignored for `stdio`                      |
-| `PORT`          | `8000`            | ignored for `stdio`                      |
-| `MCP_HOST_ORIGIN_PROTECTION` | `false` | FastMCP 3.x rejects unknown `Host` headers with HTTP 421 ("Misdirected Request"). Left off so the endpoint works behind a reverse proxy. |
-| `MCP_ALLOWED_HOSTS` | *(unset)* | Comma-separated Host allowlist, used only when protection is `true` (e.g. `echa-chem.serve.scilifelab.se`). |
-
-> **Deploying behind a reverse proxy (e.g. SciLifeLab Serve):** FastMCP 3.x's
-> Host/Origin guard returns `421 Misdirected Request` when the public hostname
-> isn't on its allowlist. This server disables the guard by default. To keep it
-> on instead, set `MCP_HOST_ORIGIN_PROTECTION=true` and
-> `MCP_ALLOWED_HOSTS=<your-domain>`.
-
-For a local stdio client (e.g. Claude Desktop), run with:
-
-```bash
-MCP_TRANSPORT=stdio python -m echa_mcp
-```
+Use it to connect to Claude, Claude Code, Codex, etc.
 
 
 Running with Docker
 -------------------
-Build and run (from inside `echa_mcp/`):
+Build and run:
 
 ```bash
 docker build -t echa-mcp .
@@ -112,8 +83,3 @@ Available tools
 - `echa_get_toxicology_studies` — individual toxicology study records (filterable).
 - `echa_get_toxicology_full` — complete toxicology data (slow).
 - `echa_get_ecotoxicology_data` — environmental fate / ecotoxicology (Sections 5 & 6).
-
-Resources
----------
-- `echa://reference/hcode-mapping` — GHS hazard-category → H-code table (Markdown).
-- `echa://reference/hcode-mapping.json` — same mapping as JSON.
