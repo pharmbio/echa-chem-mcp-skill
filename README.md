@@ -47,26 +47,7 @@ docker build -t echa-mcp .
 docker run --rm -p 8000:8000 echa-mcp
 ```
 
-The server listens on `http://localhost:8000/mcp` (streamable-http).
-
-
-Connecting a client
---------------------
-Streamable-HTTP endpoint: `http://localhost:8000/mcp`
-
-Example Claude Code / MCP client config for a stdio launch:
-
-```json
-{
-  "mcpServers": {
-    "echa": {
-      "command": "python",
-      "args": ["-m", "echa_mcp"],
-      "env": { "MCP_TRANSPORT": "stdio" }
-    }
-  }
-}
-```
+The server listens on `http://localhost:8000/mcp` (streamable-http).     
 
 
 Available tools
